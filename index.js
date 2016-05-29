@@ -17,7 +17,7 @@ module.exports = function(options) {
   /**
    * Pull out blocks and hand them over to the options-specified processor
    */
-  function processData(source) {
+  function processData(source, resource) {
     // we can't do this with regexp, unfortunately.
     var from = 0, curr, term;
     var newsource = "", blockContent;
@@ -28,7 +28,7 @@ module.exports = function(options) {
         // that's a problem...
         throw new Error("Block opened by "+start+" found without matching ending "+end);
       }
-      newsource += process(source.substring(curr, term + end.length));
+      newsource += process(source.substring(curr, term + end.length), resource);
     }
     return newsource + source.substring(from);
   };
@@ -48,6 +48,6 @@ module.exports = function(options) {
         source = process(source);
       });
     }
-    return processData(source);
+    return processData(source, this.resource);
   };
 };
